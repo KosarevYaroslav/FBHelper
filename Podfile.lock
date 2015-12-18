@@ -29,6 +29,10 @@ PODS:
   - Bolts/AppLinks (1.5.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.5.0)
+  - FBHelper (0.1.0):
+    - AFNetworking
+    - FBSDKLoginKit
+    - FBSDKShareKit
   - FBSDKCoreKit (4.8.0):
     - Bolts (~> 1.1)
     - FBSDKCoreKit/arc (= 4.8.0)
@@ -47,14 +51,20 @@ PODS:
 DEPENDENCIES:
   - AFNetworkActivityLogger (~> 2.0.3)
   - AFNetworking (~> 2.0)
+  - FBHelper (from `.`)
   - FBSDKLoginKit
   - FBSDKShareKit
   - SVProgressHUD
+
+EXTERNAL SOURCES:
+  FBHelper:
+    :path: .
 
 SPEC CHECKSUMS:
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   Bolts: 722ab9a4f8b50fc4ed1b9998a5a7a2b3f16d80b4
+  FBHelper: 65f849acc5292b0a9fa7317bb50995dc1956b4ec
   FBSDKCoreKit: 66a935d17b6e00b6b64e604f2eb9b72c9ab7deb8
   FBSDKLoginKit: d893fcbb98d854496925e9ff73c67b896982d3c4
   FBSDKShareKit: e7577ee3adf80fc04fb656dd133fbb522250672b

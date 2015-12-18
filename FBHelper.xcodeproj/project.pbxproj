@@ -14,7 +14,6 @@
 		A5200BF31C22D583004FCBF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5200BF11C22D583004FCBF7 /* Main.storyboard */; };
 		A5200BF51C22D583004FCBF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5200BF41C22D583004FCBF7 /* Assets.xcassets */; };
 		A5200BF81C22D583004FCBF7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5200BF61C22D583004FCBF7 /* LaunchScreen.storyboard */; };
-		CA01F2661BEB288CAB7F7ECE /* FBHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CA01F81AD5599726A1DB991C /* FBHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,8 +29,6 @@
 		A5200BF71C22D583004FCBF7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A5200BF91C22D583004FCBF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ADA1F63DC068B46E07DA01A1 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		CA01F81AD5599726A1DB991C /* FBHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBHelper.m; sourceTree = "<group>"; };
-		CA01FA309A24FD6C56E03D45 /* FBHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBHelper.h; sourceTree = "<group>"; };
 		F4439178A5276459FAB8ED02 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -85,8 +82,6 @@
 				A5200BF61C22D583004FCBF7 /* LaunchScreen.storyboard */,
 				A5200BF91C22D583004FCBF7 /* Info.plist */,
 				A5200BE81C22D583004FCBF7 /* Supporting Files */,
-				CA01F81AD5599726A1DB991C /* FBHelper.m */,
-				CA01FA309A24FD6C56E03D45 /* FBHelper.h */,
 			);
 			path = FBHelper;
 			sourceTree = "<group>";
@@ -232,7 +227,6 @@
 				A5200BF01C22D583004FCBF7 /* ViewController.m in Sources */,
 				A5200BED1C22D583004FCBF7 /* AppDelegate.m in Sources */,
 				A5200BEA1C22D583004FCBF7 /* main.m in Sources */,
-				CA01F2661BEB288CAB7F7ECE /* FBHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
