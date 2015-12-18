@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -15,11 +16,63 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sj_some" translatesAutoresizingMaskIntoConstraints="NO" id="qtP-sE-wEM">
+                                <rect key="frame" x="210" y="28" width="180" height="285"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w01-7O-XOf">
+                                <rect key="frame" x="260" y="321" width="80" height="30"/>
+                                <state key="normal" title="shareImage"/>
+                                <connections>
+                                    <action selector="shareImgTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="r01-dk-D73"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qad-X9-aaJ">
+                                <rect key="frame" x="267" y="365" width="67" height="30"/>
+                                <state key="normal" title="shareLink"/>
+                                <connections>
+                                    <action selector="shareLinkTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="csF-5f-fvs"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="45t-8C-3cI">
+                                <rect key="frame" x="264" y="413" width="73" height="30"/>
+                                <state key="normal" title="login to FB"/>
+                                <connections>
+                                    <action selector="loginTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pi5-EY-y5n"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LbC-vo-1XB">
+                                <rect key="frame" x="278" y="461" width="44" height="30"/>
+                                <state key="normal" title="logout"/>
+                                <connections>
+                                    <action selector="logoutTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="t3w-W4-94p"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="LbC-vo-1XB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5Yc-uv-2W0"/>
+                            <constraint firstItem="qtP-sE-wEM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7oi-a4-40w"/>
+                            <constraint firstItem="LbC-vo-1XB" firstAttribute="top" secondItem="45t-8C-3cI" secondAttribute="bottom" constant="18" id="K3M-KT-298"/>
+                            <constraint firstItem="w01-7O-XOf" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Pbd-64-FcQ"/>
+                            <constraint firstItem="qad-X9-aaJ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="U3X-yy-gsu"/>
+                            <constraint firstItem="45t-8C-3cI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="eqG-nU-wAp"/>
+                            <constraint firstItem="qad-X9-aaJ" firstAttribute="top" secondItem="w01-7O-XOf" secondAttribute="bottom" constant="14" id="rzA-dC-vW6"/>
+                            <constraint firstItem="45t-8C-3cI" firstAttribute="top" secondItem="qad-X9-aaJ" secondAttribute="bottom" constant="18" id="tcg-nQ-5Qz"/>
+                            <constraint firstItem="w01-7O-XOf" firstAttribute="top" secondItem="qtP-sE-wEM" secondAttribute="bottom" constant="8" id="uG1-fY-GKf"/>
+                            <constraint firstItem="qtP-sE-wEM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="vxw-X8-O1t"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="imageView" destination="qtP-sE-wEM" id="EV4-Xt-djg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="730" y="467"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="sj_some" width="180" height="285"/>
+    </resources>
 </document>
