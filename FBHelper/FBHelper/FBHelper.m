@@ -99,13 +99,36 @@
     } else {
 
         self.loginManager.loginBehavior = FBSDKLoginBehaviorSystemAccount;
-        [self.loginManager logInWithPublishPermissions:self.publishPermissions fromViewController:nil handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+        [self.loginManager logInWithReadPermissions:self.readPermissions fromViewController:nil handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
             if (error) {
                 callBack(NO, error.localizedDescription);
             } else if (result.isCancelled) {
                 callBack(NO, @"Cancelled");
             } else {
                 [self graphFacebookForMethodGET:@"me/friends" params:nil callBack:callBack];
+            }
+        }];
+    }
+}
+
+- (void)getUserFriendsNotUsingAppCallBack:(FBHelperCallback)callBack limit:(NSInteger)limit offset:(NSInteger)offset {
+    if (![self isSessionValid]) {
+        callBack(NO, @"Not logged in");
+        return;
+    }
+
+    if ([[FBSDKAccessToken currentAccessToken] hasGranted:(@"user_friends")]) {
+        [self graphFacebookForMethodGET:@"me/invitable_friends" params:nil callBack:callBack];
+    } else {
+
+        self.loginManager.loginBehavior = FBSDKLoginBehaviorSystemAccount;
+        [self.loginManager logInWithReadPermissions:self.readPermissions fromViewController:nil handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+            if (error) {
+                callBack(NO, error.localizedDescription);
+            } else if (result.isCancelled) {
+                callBack(NO, @"Cancelled");
+            } else {
+                [self graphFacebookForMethodGET:@"me/invitable_friends" params:nil callBack:callBack];
             }
         }];
     }
@@ -768,6 +791,11 @@
 + (void)getUserFriendsCallBack:(FBHelperCallback)callBack
 {
     [[FBHelper shared] getUserFriendsCallBack:callBack];
+}
+
++ (void)getUserFriendsNotUsingAppCallBack:(FBHelperCallback)callBack limit:(NSInteger)limit offset:(NSInteger)offset
+{
+    [[FBHelper shared] getUserFriendsNotUsingAppCallBack:callBack limit:limit offset:offset];
 }
 
 + (void)feedPostWithLinkPath:(NSString *)url caption:(NSString *)caption callBack:(FBHelperCallback)callBack

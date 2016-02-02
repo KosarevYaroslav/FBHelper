@@ -114,6 +114,15 @@ typedef NS_ENUM(NSInteger, FBAlbumPrivacyType) {
 + (void)getUserFriendsCallBack:(FBHelperCallback)callBack;
 
 /**
+ *  This will return all friends.
+ *
+ *  Permissions required: user_friends
+ *
+ *  @param callBack (BOOL success, id result)
+ */
++ (void)getUserFriendsNotUsingAppCallBack:(FBHelperCallback)callBack limit:(NSInteger)limit offset:(NSInteger)offset;
+
+/**
  *  Post in the user profile with link and caption
  *
  * https://developers.facebook.com/docs/graph-api/reference/v2.4/user/feed
