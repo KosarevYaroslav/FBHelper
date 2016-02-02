@@ -117,8 +117,19 @@
         return;
     }
 
+    /**
+     * Usually, "offset" using with "limit" in a pair, bur "limit" can be used separately
+     */
+    NSDictionary *params;
+    if (limit > 0) {
+        params = @{@"limit" : @(limit)};
+        if (offset > 0) {
+            @{@"limit" : @(limit), @"offset" : @(offset)};
+        }
+    }
+
     if ([[FBSDKAccessToken currentAccessToken] hasGranted:(@"user_friends")]) {
-        [self graphFacebookForMethodGET:@"me/invitable_friends" params:nil callBack:callBack];
+        [self graphFacebookForMethodGET:@"me/invitable_friends" params:params callBack:callBack];
     } else {
 
         self.loginManager.loginBehavior = FBSDKLoginBehaviorSystemAccount;
@@ -128,7 +139,7 @@
             } else if (result.isCancelled) {
                 callBack(NO, @"Cancelled");
             } else {
-                [self graphFacebookForMethodGET:@"me/invitable_friends" params:nil callBack:callBack];
+                [self graphFacebookForMethodGET:@"me/invitable_friends" params:params callBack:callBack];
             }
         }];
     }
