@@ -120,7 +120,7 @@ typedef NS_ENUM(NSInteger, FBAlbumPrivacyType) {
  *
  *  @param callBack (BOOL success, id result)
  */
-+ (void)getUserFriendsNotUsingAppCallBack:(FBHelperCallback)callBack limit:(NSInteger)limit offset:(NSInteger)offset;
++ (void)getUserFriendsNotUsingAppWithLimit:(NSInteger)limit offset:(NSInteger)offset callBack:(FBHelperCallback)callBack;
 
 /**
  *  Post in the user profile with link and caption

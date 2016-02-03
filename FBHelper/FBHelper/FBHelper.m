@@ -111,21 +111,18 @@
     }
 }
 
-- (void)getUserFriendsNotUsingAppCallBack:(FBHelperCallback)callBack limit:(NSInteger)limit offset:(NSInteger)offset {
+- (void)getUserFriendsNotUsingAppWithLimit:(NSInteger)limit offset:(NSInteger)offset callBack:(FBHelperCallback)callBack  {
     if (![self isSessionValid]) {
         callBack(NO, @"Not logged in");
         return;
     }
 
-    /**
-     * Usually, "offset" using with "limit" in a pair, bur "limit" can be used separately
-     */
-    NSDictionary *params;
+    NSMutableDictionary *params = [@{@"fields" : @"name,picture.width(100).height(100),city,country"} mutableCopy];
     if (limit > 0) {
-        params = @{@"limit" : @(limit)};
-        if (offset > 0) {
-            @{@"limit" : @(limit), @"offset" : @(offset)};
-        }
+        params[@"limit"] = @(limit);
+    }
+    if (offset > 0) {
+        params[@"offset"] = @(offset);
     }
 
     if ([[FBSDKAccessToken currentAccessToken] hasGranted:(@"user_friends")]) {
@@ -804,9 +801,9 @@
     [[FBHelper shared] getUserFriendsCallBack:callBack];
 }
 
-+ (void)getUserFriendsNotUsingAppCallBack:(FBHelperCallback)callBack limit:(NSInteger)limit offset:(NSInteger)offset
++ (void)getUserFriendsNotUsingAppWithLimit:(NSInteger)limit offset:(NSInteger)offset callBack:(FBHelperCallback)callBack
 {
-    [[FBHelper shared] getUserFriendsNotUsingAppCallBack:callBack limit:limit offset:offset];
+    [[FBHelper shared] getUserFriendsNotUsingAppWithLimit:limit offset:offset callBack:callBack];
 }
 
 + (void)feedPostWithLinkPath:(NSString *)url caption:(NSString *)caption callBack:(FBHelperCallback)callBack
