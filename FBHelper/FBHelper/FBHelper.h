@@ -70,6 +70,10 @@ typedef NS_ENUM(NSInteger, FBAlbumPrivacyType) {
  */
 + (void)loginCallBack:(FBHelperCallback)callBack;
 
++ (void)loginForPublishActionsCallBack:(FBHelperCallback)callBack;
+
++ (BOOL)checkPublishPermission;
+
 
 /**
  *  Facebook login

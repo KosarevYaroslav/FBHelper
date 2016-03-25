@@ -54,20 +54,41 @@
                                             } else if (result.isCancelled) {
                                                 callBack(NO, @"Cancelled");
                                             } else {
-                                                [self.loginManager logInWithPublishPermissions: self.publishPermissions
-                                                                                       handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
-                                                                                           if (error) {
-                                                                                               callBack(NO, error.localizedDescription);
-                                                                                           } else if (result.isCancelled) {
-                                                                                               callBack(NO, @"Cancelled");
-                                                                                           } else {
-                                                                                               if(callBack){
-                                                                                                   callBack(!error, result);
-                                                                                               }
-                                                                                           }
-                                                                                       }];
+                                                if(callBack){
+                                                    callBack(!error, result);
+                                                }
                                             }
                                         }];
+}
+
+- (BOOL)checkPublishPermission
+{
+    return [[FBSDKAccessToken currentAccessToken] hasGranted:@"publish_actions"];
+}
+
+- (void)loginForPublishActionsCallBack:(FBHelperCallback)callBack
+{
+    [self loginForPublishActionsWithBehavior:FBSDKLoginBehaviorSystemAccount CallBack:callBack];
+}
+
+- (void)loginForPublishActionsWithBehavior:(FBSDKLoginBehavior)behavior CallBack:(FBHelperCallback)callBack
+{
+    if (behavior) {
+        self.loginManager.loginBehavior = behavior;
+    }
+    
+    [self.loginManager logInWithPublishPermissions: self.publishPermissions
+                                           handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+                                               if (error) {
+                                                   callBack(NO, error.localizedDescription);
+                                               } else if (result.isCancelled) {
+                                                   callBack(NO, @"Cancelled");
+                                               } else {
+                                                   if(callBack){
+                                                       callBack(!error, result);
+                                                   }
+                                               }
+                                           }];
 }
 
 
@@ -757,7 +778,7 @@
 + (FBHelper *)shared
 {
     static FBHelper *scFacebook = nil;
-
+    
     @synchronized (self){
 
         static dispatch_once_t pred;
@@ -780,7 +801,7 @@
     [[FBHelper shared] initWithReadPermissions:readPermissions publishPermissions:publishPermissions];
 }
 
-+(BOOL)isSessionValid
++ (BOOL)isSessionValid
 {
     return [[FBHelper shared] isSessionValid];
 }
@@ -788,6 +809,16 @@
 + (void)loginCallBack:(FBHelperCallback)callBack
 {
     [[FBHelper shared] loginCallBack:callBack];
+}
+
++ (void)loginForPublishActionsCallBack:(FBHelperCallback)callBack
+{
+    [[FBHelper shared] loginForPublishActionsCallBack:callBack];
+}
+
++ (BOOL)checkPublishPermission
+{
+    return [[FBHelper shared] checkPublishPermission];
 }
 
 + (void)loginWithBehavior:(FBSDKLoginBehavior)behavior CallBack:(FBHelperCallback)callBack
