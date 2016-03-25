@@ -45,7 +45,7 @@
     if (behavior) {
         self.loginManager.loginBehavior = behavior;
     }
-
+    
     [self.loginManager logInWithReadPermissions: self.readPermissions
                              fromViewController: nil
                                         handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
@@ -54,9 +54,18 @@
                                             } else if (result.isCancelled) {
                                                 callBack(NO, @"Cancelled");
                                             } else {
-                                                if(callBack){
-                                                    callBack(!error, result);
-                                                }
+                                                [self.loginManager logInWithPublishPermissions: self.publishPermissions
+                                                                                       handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+                                                                                           if (error) {
+                                                                                               callBack(NO, error.localizedDescription);
+                                                                                           } else if (result.isCancelled) {
+                                                                                               callBack(NO, @"Cancelled");
+                                                                                           } else {
+                                                                                               if(callBack){
+                                                                                                   callBack(!error, result);
+                                                                                               }
+                                                                                           }
+                                                                                       }];
                                             }
                                         }];
 }
