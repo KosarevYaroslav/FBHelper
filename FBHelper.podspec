@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
   s.license      = { :type => "MIT", :text => "FBHelper is licensed under the MIT License" }
 
   s.author       = { "sergey.zhdanov" => "sergey.zhdanov@drivepixels.ru" }
-  
+
   s.platform     = :ios, "7.0"
 
   s.source       = { :git => "https://github.com/DrivePixels/FBHelper.git", :tag => "0.1.0" }
@@ -29,8 +29,8 @@ Pod::Spec.new do |s|
   s.source_files  = "FBHelper/FBHelper/FBHelper.{h,m}"
   s.requires_arc = true
 
-  s.dependency "FBSDKLoginKit"
-  s.dependency "FBSDKShareKit"
+  s.dependency "FBSDKLoginKit", '4.22.0'
+  s.dependency "FBSDKShareKit", '4.22.0'
   s.dependency "AFNetworking"
 
 end
