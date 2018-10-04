@@ -684,9 +684,9 @@
 
     FBSDKShareLinkContent *content = [[FBSDKShareLinkContent alloc] init];
     content.contentURL = [NSURL URLWithString:link];
-    content.imageURL = [NSURL URLWithString:imageUrl];
-    content.contentDescription = description;
-    content.contentTitle = title;
+    //content.imageURL = [NSURL URLWithString:imageUrl];
+    //content.contentDescription = description;
+    //content.contentTitle = title;
 
     FBSDKShareDialog *dialog = [[FBSDKShareDialog alloc] init];
     dialog.mode = FBSDKShareDialogModeNative;
