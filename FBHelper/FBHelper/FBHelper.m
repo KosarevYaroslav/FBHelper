@@ -35,9 +35,13 @@
 
 
 
-- (void)loginCallBack:(FBHelperCallback)callBack
+- (void)loginCallBack:(FBHelperCallback)callBack forLogin:(BOOL)forLogin
 {
-    [self loginWithBehavior:FBSDKLoginBehaviorWeb CallBack:callBack];
+    if (forLogin) {
+        [self loginWithBehaviorLogin:FBSDKLoginBehaviorWeb CallBack:callBack];
+    } else {
+        [self loginWithBehavior:FBSDKLoginBehaviorSystemAccount CallBack:callBack];
+    }
 }
 
 - (void)loginWithBehavior:(FBSDKLoginBehavior)behavior CallBack:(FBHelperCallback)callBack
@@ -53,6 +57,42 @@
                                             if (error) {
                                                 callBack(NO, error.localizedDescription);
                                             } else if (result.isCancelled) {
+                                                callBack(NO, @"Cancelled");
+                                            } else {
+                                                if(callBack){
+                                                    callBack(!error, result);
+                                                }
+                                            }
+                                        }];
+}
+
+- (void)loginWithBehaviorLogin:(FBSDKLoginBehavior)behavior CallBack:(FBHelperCallback)callBack
+{
+    FBSDKAccessToken *ct = [FBSDKAccessToken currentAccessToken];
+    FBSDKProfile *cp = [FBSDKProfile currentProfile];
+    [self.loginManager logOut];
+    if (behavior) {
+        self.loginManager.loginBehavior = behavior;
+    }
+    
+    [self.loginManager logInWithReadPermissions: self.readPermissions
+                             fromViewController: nil
+                                        handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+                                            if (error) {
+                                                if (ct) {
+                                                    [FBSDKAccessToken setCurrentAccessToken:ct];
+                                                }
+                                                if (cp) {
+                                                    [FBSDKProfile setCurrentProfile:cp];
+                                                }
+                                                callBack(NO, error.localizedDescription);
+                                            } else if (result.isCancelled) {
+                                                if (ct) {
+                                                    [FBSDKAccessToken setCurrentAccessToken:ct];
+                                                }
+                                                if (cp) {
+                                                    [FBSDKProfile setCurrentProfile:cp];
+                                                }
                                                 callBack(NO, @"Cancelled");
                                             } else {
                                                 if(callBack){
@@ -807,9 +847,14 @@
     return [[FBHelper shared] isSessionValid];
 }
 
++ (void)loginCallBackLogin:(FBHelperCallback)callBack
+{
+    [[FBHelper shared] loginCallBack:callBack forLogin:YES];
+}
+
 + (void)loginCallBack:(FBHelperCallback)callBack
 {
-    [[FBHelper shared] loginCallBack:callBack];
+    [[FBHelper shared] loginCallBack:callBack forLogin:NO];
 }
 
 + (void)loginForPublishActionsCallBack:(FBHelperCallback)callBack
