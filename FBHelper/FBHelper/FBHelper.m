@@ -37,11 +37,12 @@
 
 - (void)loginCallBack:(FBHelperCallback)callBack
 {
-    [self loginWithBehavior:FBSDKLoginBehaviorSystemAccount CallBack:callBack];
+    [self loginWithBehavior:FBSDKLoginBehaviorWeb CallBack:callBack];
 }
 
 - (void)loginWithBehavior:(FBSDKLoginBehavior)behavior CallBack:(FBHelperCallback)callBack
 {
+    [self.loginManager logOut];
     if (behavior) {
         self.loginManager.loginBehavior = behavior;
     }
