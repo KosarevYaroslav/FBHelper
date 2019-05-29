@@ -5,7 +5,7 @@ inhibit_all_warnings!
 
 pod "AFNetworking", "~> 2.0"
 pod 'AFNetworkActivityLogger', '~> 2.0.3'
-pod 'FBSDKLoginKit', '4.35.0'
-pod 'FBSDKShareKit', '4.35.0'
+pod 'FBSDKLoginKit'
+pod 'FBSDKShareKit'
 pod 'SVProgressHUD'
 pod 'FBHelper', :path => '.'

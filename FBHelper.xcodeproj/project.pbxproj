@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B2F45C5229EBD2E00F4D5C1 /* FBHelper in Resources */ = {isa = PBXBuildFile; fileRef = 1B2F45C4229EBD2E00F4D5C1 /* FBHelper */; };
 		86BFD6D0015BF17B98E9C190 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DB4AD6BF24B9F32A3EA8223 /* libPods.a */; };
 		A5200BEA1C22D583004FCBF7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A5200BE91C22D583004FCBF7 /* main.m */; };
 		A5200BED1C22D583004FCBF7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A5200BEC1C22D583004FCBF7 /* AppDelegate.m */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1B2F45C4229EBD2E00F4D5C1 /* FBHelper */ = {isa = PBXFileReference; lastKnownFileType = folder; path = FBHelper; sourceTree = "<group>"; };
 		5DB4AD6BF24B9F32A3EA8223 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5200BE51C22D583004FCBF7 /* FBHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FBHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5200BE91C22D583004FCBF7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				A5200BEE1C22D583004FCBF7 /* ViewController.h */,
 				A5200BEF1C22D583004FCBF7 /* ViewController.m */,
 				A5200BF11C22D583004FCBF7 /* Main.storyboard */,
+				1B2F45C4229EBD2E00F4D5C1 /* FBHelper */,
 				A5200BF41C22D583004FCBF7 /* Assets.xcassets */,
 				A5200BF61C22D583004FCBF7 /* LaunchScreen.storyboard */,
 				A5200BF91C22D583004FCBF7 /* Info.plist */,
@@ -145,6 +148,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -163,6 +167,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B2F45C5229EBD2E00F4D5C1 /* FBHelper in Resources */,
 				A5200BF81C22D583004FCBF7 /* LaunchScreen.storyboard in Resources */,
 				A5200BF51C22D583004FCBF7 /* Assets.xcassets in Resources */,
 				A5200BF31C22D583004FCBF7 /* Main.storyboard in Resources */,
