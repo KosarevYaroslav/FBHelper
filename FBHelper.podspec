@@ -29,9 +29,9 @@ Pod::Spec.new do |s|
   s.source_files  = "FBHelper/FBHelper/FBHelper.{h,m}"
   s.requires_arc = true
 
-  s.dependency "FBSDKCoreKit", '4.35.0'
-  s.dependency "FBSDKLoginKit", '4.35.0'
-  s.dependency "FBSDKShareKit", '4.35.0'
+  s.dependency "FBSDKCoreKit"
+  s.dependency "FBSDKLoginKit"
+  s.dependency "FBSDKShareKit"
   s.dependency "AFNetworking"
 
 end
