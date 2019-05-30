@@ -741,12 +741,12 @@
     //content.contentTitle = title;
     
     FBSDKShareDialog *dialog = [[FBSDKShareDialog alloc] init];
-    dialog.mode = FBSDKShareDialogModeNative;
+    dialog.mode = FBSDKShareDialogModeAutomatic;
     dialog.shareContent = content;
     dialog.delegate = self;
-    if(!dialog.canShow) {
-        dialog.mode = FBSDKShareDialogModeAutomatic;
-    }
+//    if(!dialog.canShow) {
+//        dialog.mode = FBSDKShareDialogModeAutomatic;
+//    }
     if(!dialog.canShow) {
         callBack(NO, @"Can't show share dialog");
         return;
