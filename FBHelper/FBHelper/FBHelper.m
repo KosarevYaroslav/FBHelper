@@ -8,7 +8,7 @@
 #import "AFNetworkActivityLogger.h"
 
 
-@interface FBHelper () <FBSDKAppInviteDialogDelegate, FBSDKSharingDelegate>
+@interface FBHelper () <FBSDKSharingDelegate>
 
 @property (strong, nonatomic) FBSDKLoginManager *loginManager;
 @property (strong, nonatomic) FBHelperCallback inviteCallcack;
@@ -38,9 +38,9 @@
 - (void)loginCallBack:(FBHelperCallback)callBack forLogin:(BOOL)forLogin
 {
     if (forLogin) {
-        [self loginWithBehaviorLogin:FBSDKLoginBehaviorWeb CallBack:callBack];
+        [self loginWithBehaviorLogin:FBSDKLoginBehaviorBrowser CallBack:callBack];
     } else {
-        [self loginWithBehavior:FBSDKLoginBehaviorSystemAccount CallBack:callBack];
+        [self loginWithBehavior:FBSDKLoginBehaviorBrowser CallBack:callBack];
     }
 }
 
@@ -51,19 +51,31 @@
         self.loginManager.loginBehavior = behavior;
     }
     
-    [self.loginManager logInWithReadPermissions: self.readPermissions
-                             fromViewController: nil
-                                        handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
-                                            if (error) {
-                                                callBack(NO, error.localizedDescription);
-                                            } else if (result.isCancelled) {
-                                                callBack(NO, @"Cancelled");
-                                            } else {
-                                                if(callBack){
-                                                    callBack(!error, result);
-                                                }
-                                            }
-                                        }];
+    [self.loginManager logInWithPermissions:self.readPermissions fromViewController:nil handler:^(FBSDKLoginManagerLoginResult * _Nullable result, NSError * _Nullable error) {
+        if (error) {
+            callBack(NO, error.localizedDescription);
+        } else if (result.isCancelled) {
+            callBack(NO, @"Cancelled");
+        } else {
+            if(callBack){
+                callBack(!error, result);
+            }
+        }
+    }];
+    
+    //    [self.loginManager logInWithReadPermissions: self.readPermissions
+    //                             fromViewController: nil
+    //                                        handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+    //                                            if (error) {
+    //                                                callBack(NO, error.localizedDescription);
+    //                                            } else if (result.isCancelled) {
+    //                                                callBack(NO, @"Cancelled");
+    //                                            } else {
+    //                                                if(callBack){
+    //                                                    callBack(!error, result);
+    //                                                }
+    //                                            }
+    //                                        }];
 }
 
 - (void)loginWithBehaviorLogin:(FBSDKLoginBehavior)behavior CallBack:(FBHelperCallback)callBack
@@ -75,31 +87,31 @@
         self.loginManager.loginBehavior = behavior;
     }
     
-    [self.loginManager logInWithReadPermissions: self.readPermissions
-                             fromViewController: nil
-                                        handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
-                                            if (error) {
-                                                if (ct) {
-                                                    [FBSDKAccessToken setCurrentAccessToken:ct];
-                                                }
-                                                if (cp) {
-                                                    [FBSDKProfile setCurrentProfile:cp];
-                                                }
-                                                callBack(NO, error.localizedDescription);
-                                            } else if (result.isCancelled) {
-                                                if (ct) {
-                                                    [FBSDKAccessToken setCurrentAccessToken:ct];
-                                                }
-                                                if (cp) {
-                                                    [FBSDKProfile setCurrentProfile:cp];
-                                                }
-                                                callBack(NO, @"Cancelled");
-                                            } else {
-                                                if(callBack){
-                                                    callBack(!error, result);
-                                                }
+    [self.loginManager logInWithPermissions: self.readPermissions
+                         fromViewController: nil
+                                    handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+                                        if (error) {
+                                            if (ct) {
+                                                [FBSDKAccessToken setCurrentAccessToken:ct];
                                             }
-                                        }];
+                                            if (cp) {
+                                                [FBSDKProfile setCurrentProfile:cp];
+                                            }
+                                            callBack(NO, error.localizedDescription);
+                                        } else if (result.isCancelled) {
+                                            if (ct) {
+                                                [FBSDKAccessToken setCurrentAccessToken:ct];
+                                            }
+                                            if (cp) {
+                                                [FBSDKProfile setCurrentProfile:cp];
+                                            }
+                                            callBack(NO, @"Cancelled");
+                                        } else {
+                                            if(callBack){
+                                                callBack(!error, result);
+                                            }
+                                        }
+                                    }];
 }
 
 - (BOOL)checkPublishPermission
@@ -109,7 +121,7 @@
 
 - (void)loginForPublishActionsCallBack:(FBHelperCallback)callBack
 {
-    [self loginForPublishActionsWithBehavior:FBSDKLoginBehaviorSystemAccount CallBack:callBack];
+    [self loginForPublishActionsWithBehavior:FBSDKLoginBehaviorBrowser CallBack:callBack];
 }
 
 - (void)loginForPublishActionsWithBehavior:(FBSDKLoginBehavior)behavior CallBack:(FBHelperCallback)callBack
@@ -118,32 +130,32 @@
         self.loginManager.loginBehavior = behavior;
     }
     
-    [self.loginManager logInWithPublishPermissions: self.publishPermissions
-                                           handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
-                                               if (error) {
-                                                   callBack(NO, error.localizedDescription);
-                                               } else if (result.isCancelled) {
-                                                   callBack(NO, @"Cancelled");
-                                               } else {
-                                                   if(callBack){
-                                                       callBack(!error, result);
-                                                   }
-                                               }
-                                           }];
+    [self.loginManager logInWithPermissions: self.publishPermissions fromViewController: nil
+                                    handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+                                        if (error) {
+                                            callBack(NO, error.localizedDescription);
+                                        } else if (result.isCancelled) {
+                                            callBack(NO, @"Cancelled");
+                                        } else {
+                                            if(callBack){
+                                                callBack(!error, result);
+                                            }
+                                        }
+                                    }];
 }
 
 
 - (void)logoutCallBack:(FBHelperCallback)callBack
 {
     [self.loginManager logOut];
-
+    
     NSHTTPCookieStorage* cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     NSArray* facebookCookies = [cookies cookiesForURL:[NSURL URLWithString:@"https://facebook.com/"]];
-
+    
     for (NSHTTPCookie* cookie in facebookCookies) {
         [cookies deleteCookie:cookie];
     }
-
+    
     callBack(YES, @"Logout successfully");
 }
 
@@ -153,7 +165,7 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     [self graphFacebookForMethodGET:@"me" params:@{@"fields" : fields} callBack:callBack];
 }
 
@@ -164,13 +176,13 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     if ([[FBSDKAccessToken currentAccessToken] hasGranted:(@"user_friends")]) {
         [self graphFacebookForMethodGET:@"me/friends" params:nil callBack:callBack];
     } else {
-
-        self.loginManager.loginBehavior = FBSDKLoginBehaviorSystemAccount;
-        [self.loginManager logInWithReadPermissions:self.readPermissions fromViewController:nil handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+        
+        self.loginManager.loginBehavior = FBSDKLoginBehaviorBrowser;
+        [self.loginManager logInWithPermissions:self.readPermissions fromViewController:nil handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
             if (error) {
                 callBack(NO, error.localizedDescription);
             } else if (result.isCancelled) {
@@ -187,7 +199,7 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     NSMutableDictionary *params = [@{@"fields" : @"name,picture.width(100).height(100),city,country"} mutableCopy];
     if (limit > 0) {
         params[@"limit"] = @(limit);
@@ -195,13 +207,13 @@
     if (offset > 0) {
         params[@"offset"] = @(offset);
     }
-
+    
     if ([[FBSDKAccessToken currentAccessToken] hasGranted:(@"user_friends")]) {
         [self graphFacebookForMethodGET:@"me/invitable_friends" params:params callBack:callBack];
     } else {
-
-        self.loginManager.loginBehavior = FBSDKLoginBehaviorSystemAccount;
-        [self.loginManager logInWithReadPermissions:self.readPermissions fromViewController:nil handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+        
+        self.loginManager.loginBehavior = FBSDKLoginBehaviorBrowser;
+        [self.loginManager logInWithPermissions:self.readPermissions fromViewController:nil handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
             if (error) {
                 callBack(NO, error.localizedDescription);
             } else if (result.isCancelled) {
@@ -219,11 +231,11 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     //Need to provide POST parameters to the Facebook SDK for the specific post type
     NSString *graphPath = @"me/feed";
-
+    
     switch (self.postType) {
         case FBPostTypeLink:{
             params[@"link"] = (url != nil) ? url : @"";
@@ -243,22 +255,22 @@
         }
         case FBPostTypeVideo:{
             graphPath = @"me/videos";
-
+            
             if (videoData == nil) {
                 callBack(NO, @"Not logged in");
                 return;
             }
-
+            
             params[@"video.mp4"] = videoData;
             params[@"title"] = caption;
             params[@"description"] = message;
             break;
         }
-
+            
         default:
             break;
     }
-
+    
     [self graphFacebookForMethodPOST:graphPath params:params callBack:callBack];
 }
 
@@ -268,30 +280,29 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     [self graphFacebookForMethodPOST:@"me/feed" params:nil callBack:callBack];
 }
 
-- (void)inviteFriendsWithAppLinkURL:(NSURL *)url previewImageURL:(NSURL *)preview callBack:(FBHelperCallback)callBack
-{
-    if (![self isSessionValid]) {
-        callBack(NO, @"Not logged in");
-        return;
-    }
-
-    FBSDKAppInviteContent *content =[[FBSDKAppInviteContent alloc] init];
-    content.appLinkURL = url;
-
-    if (preview) {
-        //optionally set previewImageURL
-        content.appInvitePreviewImageURL = preview;
-    }
-
-    [FBSDKAppInviteDialog showFromViewController:nil withContent:content
-                                        delegate:self];
-
-    self.inviteCallcack = callBack;
-}
+//- (void)inviteFriendsWithAppLinkURL:(NSURL *)url previewImageURL:(NSURL *)preview callBack:(FBHelperCallback)callBack
+//{
+//    if (![self isSessionValid]) {
+//        callBack(NO, @"Not logged in");
+//        return;
+//    }
+//
+//    FBSDKAppInviteContent *content =[[FBSDKAppInviteContent alloc] init];
+//    content.appLinkURL = url;
+//
+//    if (preview) {
+//        //optionally set previewImageURL
+//        content.appInvitePreviewImageURL = preview;
+//    }
+//    [FBSDKAppInviteDialog showFromViewController:nil withContent:content
+//                                        delegate:self];
+//
+//    self.inviteCallcack = callBack;
+//}
 
 - (void)getPagesCallBack:(FBHelperCallback)callBack
 {
@@ -299,13 +310,13 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     if ([[FBSDKAccessToken currentAccessToken] hasGranted:(@"manage_pages")]) {
         [self graphFacebookForMethodGET:@"me/accounts" params:nil callBack:callBack];
     } else {
-
-        self.loginManager.loginBehavior = FBSDKLoginBehaviorSystemAccount;
-        [self.loginManager logInWithPublishPermissions:self.publishPermissions fromViewController:nil handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+        
+        self.loginManager.loginBehavior = FBSDKLoginBehaviorBrowser;
+        [self.loginManager logInWithPermissions:self.publishPermissions fromViewController:nil handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
             if (error) {
                 callBack(NO, error.localizedDescription);
             } else if (result.isCancelled) {
@@ -315,7 +326,7 @@
             }
         }];
     }
-
+    
 }
 
 - (void)getPageById:(NSString *)pageId callBack:(FBHelperCallback)callBack
@@ -324,12 +335,12 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     if (!pageId) {
         callBack(NO, @"Page id or name required");
         return;
     }
-
+    
     [FBHelper graphFacebookForMethodGET:pageId params:nil callBack:callBack];
 }
 
@@ -339,28 +350,28 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     if (!page) {
         callBack(NO, @"Page id or name required");
         return;
     }
-
+    
     [FBHelper graphFacebookForMethodPOST:[NSString stringWithFormat:@"%@/feed", page] params:@{@"message" : message} callBack:callBack];
 }
 
 - (void)feedPostForPage:(NSString *)page message:(NSString *)message photo:(UIImage *)photo callBack:(FBHelperCallback)callBack
 {
-
+    
     if (![self isSessionValid]) {
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     if (!page) {
         callBack(NO, @"Page id or name required");
         return;
     }
-
+    
     [FBHelper graphFacebookForMethodPOST:[NSString stringWithFormat:@"%@/photos", page] params:@{@"message" : message, @"source" : UIImagePNGRepresentation(photo)} callBack:callBack];
 }
 
@@ -370,12 +381,12 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     if (!page) {
         callBack(NO, @"Page id or name required");
         return;
     }
-
+    
     [FBHelper graphFacebookForMethodPOST:[NSString stringWithFormat:@"%@/feed", page] params:@{@"message" : message, @"link" : url} callBack:callBack];
 }
 
@@ -385,49 +396,49 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     if (!page) {
         callBack(NO, @"Page id or name required");
         return;
     }
-
+    
     [FBHelper graphFacebookForMethodPOST:[NSString stringWithFormat:@"%@/videos", page]
                                   params:@{@"title" : title,
-                                          @"description" : description,
-                                          @"video.mp4" : videoData} callBack:callBack];
+                                           @"description" : description,
+                                           @"video.mp4" : videoData} callBack:callBack];
 }
 
 - (void)feedPostAdminForPageName:(NSString *)page message:(NSString *)message callBack:(FBHelperCallback)callBack
 {
-
+    
     if (![self isSessionValid]) {
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     [FBHelper getPagesCallBack:^(BOOL success, id result) {
-
+        
         if (success) {
-
+            
             NSDictionary *dicPageAdmin = nil;
-
+            
             for (NSDictionary *dic in result[@"data"]) {
-
+                
                 if ([dic[@"name"] isEqualToString:page]) {
                     dicPageAdmin = dic;
                     break;
                 }
             }
-
+            
             if (!dicPageAdmin) {
                 callBack(NO, @"Page not found!");
                 return;
             }
-
-
+            
+            
             FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
-                    initWithGraphPath:[NSString stringWithFormat:@"%@/feed", dicPageAdmin[@"id"]] parameters:@{@"message" : message} HTTPMethod:@"POST"];
-
+                                          initWithGraphPath:[NSString stringWithFormat:@"%@/feed", dicPageAdmin[@"id"]] parameters:@{@"message" : message} HTTPMethod:@"POST"];
+            
             [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
                 if (error) {
                     callBack(NO, [error domain]);
@@ -441,42 +452,42 @@
 
 - (void)feedPostAdminForPageName:(NSString *)page video:(NSData *)videoData title:(NSString *)title description:(NSString *)description callBack:(FBHelperCallback)callBack
 {
-
+    
     if (![self isSessionValid]) {
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     [FBHelper getPagesCallBack:^(BOOL success, id result) {
-
+        
         if (success) {
-
+            
             NSDictionary *dicPageAdmin = nil;
-
+            
             for (NSDictionary *dic in result[@"data"]) {
-
+                
                 if ([dic[@"name"] isEqualToString:page]) {
                     dicPageAdmin = dic;
                     break;
                 }
             }
-
+            
             if (!dicPageAdmin) {
                 callBack(NO, @"Page not found!");
                 return;
             }
-
-
+            
+            
             FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
-                    initWithGraphPath:[NSString stringWithFormat:@"%@/feed", dicPageAdmin[@"id"]]
-                           parameters:@{
-                                   @"title" : title,
-                                   @"description" : description,
-                                   @"video.mp4" : videoData,
-                                   @"access_token" : dicPageAdmin[@"access_token"]
-                           }
-                           HTTPMethod:@"POST"];
-
+                                          initWithGraphPath:[NSString stringWithFormat:@"%@/feed", dicPageAdmin[@"id"]]
+                                          parameters:@{
+                                                       @"title" : title,
+                                                       @"description" : description,
+                                                       @"video.mp4" : videoData,
+                                                       @"access_token" : dicPageAdmin[@"access_token"]
+                                                       }
+                                          HTTPMethod:@"POST"];
+            
             [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
                 if (error) {
                     callBack(NO, [error domain]);
@@ -494,35 +505,35 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     [FBHelper getPagesCallBack:^(BOOL success, id result) {
-
+        
         if (success) {
-
+            
             NSDictionary *dicPageAdmin = nil;
-
+            
             for (NSDictionary *dic in result[@"data"]) {
-
+                
                 if ([dic[@"name"] isEqualToString:page]) {
                     dicPageAdmin = dic;
                     break;
                 }
             }
-
+            
             if (!dicPageAdmin) {
                 callBack(NO, @"Page not found!");
                 return;
             }
-
+            
             FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
-                    initWithGraphPath:[NSString stringWithFormat:@"%@/feed", dicPageAdmin[@"id"]]
-                           parameters:@{
-                                   @"message" : message,
-                                   @"link" : url,
-                                   @"access_token" : dicPageAdmin[@"access_token"]
-                           }
-                           HTTPMethod:@"POST"];
-
+                                          initWithGraphPath:[NSString stringWithFormat:@"%@/feed", dicPageAdmin[@"id"]]
+                                          parameters:@{
+                                                       @"message" : message,
+                                                       @"link" : url,
+                                                       @"access_token" : dicPageAdmin[@"access_token"]
+                                                       }
+                                          HTTPMethod:@"POST"];
+            
             [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
                 if (error) {
                     callBack(NO, [error domain]);
@@ -536,40 +547,40 @@
 
 - (void)feedPostAdminForPageName:(NSString *)page message:(NSString *)message photo:(UIImage *)photo callBack:(FBHelperCallback)callBack
 {
-
+    
     if (![self isSessionValid]) {
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     [FBHelper getPagesCallBack:^(BOOL success, id result) {
-
+        
         if (success) {
-
+            
             NSDictionary *dicPageAdmin = nil;
-
+            
             for (NSDictionary *dic in result[@"data"]) {
-
+                
                 if ([dic[@"name"] isEqualToString:page]) {
                     dicPageAdmin = dic;
                     break;
                 }
             }
-
+            
             if (!dicPageAdmin) {
                 callBack(NO, @"Page not found!");
                 return;
             }
-
-
+            
+            
             FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
-                    initWithGraphPath:[NSString stringWithFormat:@"%@/feed", dicPageAdmin[@"id"]]
-                           parameters:@{
-                                   @"message" : message,
-                                   @"source" : UIImagePNGRepresentation(photo),
-                                   @"access_token" : dicPageAdmin[@"access_token"]}
-                           HTTPMethod:@"POST"];
-
+                                          initWithGraphPath:[NSString stringWithFormat:@"%@/feed", dicPageAdmin[@"id"]]
+                                          parameters:@{
+                                                       @"message" : message,
+                                                       @"source" : UIImagePNGRepresentation(photo),
+                                                       @"access_token" : dicPageAdmin[@"access_token"]}
+                                          HTTPMethod:@"POST"];
+            
             [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
                 if (error) {
                     callBack(NO, [error domain]);
@@ -587,7 +598,7 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     [self graphFacebookForMethodGET:@"me/albums" params:nil callBack:callBack];
 }
 
@@ -597,12 +608,12 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     if (!albumId) {
         callBack(NO, @"Album id required");
         return;
     }
-
+    
     [FBHelper graphFacebookForMethodGET:albumId params:nil callBack:callBack];
 }
 
@@ -612,12 +623,12 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     if (!albumId) {
         callBack(NO, @"Album id required");
         return;
     }
-
+    
     [FBHelper graphFacebookForMethodGET:[NSString stringWithFormat:@"%@/photos", albumId] params:nil callBack:callBack];
 }
 
@@ -627,14 +638,14 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     if (!name && !message) {
         callBack(NO, @"Name and message required");
         return;
     }
-
+    
     NSString *privacyString = @"";
-
+    
     switch (privacy) {
         case FBAlbumPrivacyEveryone:
             privacyString = @"EVERYONE";
@@ -651,10 +662,10 @@
         default:
             break;
     }
-
+    
     [FBHelper       graphFacebookForMethodPOST:@"me/albums" params:@{@"name" : (name != nil) ? name : @"",
-            @"message" : message,
-            @"value" : privacyString} callBack:callBack];
+                                                                     @"message" : message,
+                                                                     @"value" : privacyString} callBack:callBack];
 }
 
 - (void)feedPostForAlbumId:(NSString *)albumId photo:(UIImage *)photo callBack:(FBHelperCallback)callBack
@@ -663,12 +674,12 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     if (!albumId) {
         callBack(NO, @"Album id required");
         return;
     }
-
+    
     [FBHelper graphFacebookForMethodPOST:[NSString stringWithFormat:@"%@/photos", albumId] params:@{@"source" : UIImagePNGRepresentation(photo)} callBack:callBack];
 }
 
@@ -678,18 +689,18 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
-    FBSDKShareOpenGraphAction *action = [[FBSDKShareOpenGraphAction alloc] init];
+    
+    FBSDKShareOpenGraphAction *action = [FBSDKShareOpenGraphAction init];
     action.actionType = actionType;
     [action setObject:openGraphObject forKey:objectName];
     FBSDKShareOpenGraphContent *content = [[FBSDKShareOpenGraphContent alloc] init];
     content.action = action;
     content.previewPropertyName = objectName;
-
+    
     [FBSDKShareDialog showFromViewController:viewController
                                  withContent:content
                                     delegate:self];
-
+    
     self.sharedCallcack = callBack;
 }
 
@@ -708,13 +719,13 @@
     [[[FBSDKGraphRequest alloc] initWithGraphPath:method
                                        parameters:params
                                        HTTPMethod:httpMethod]
-            startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-                if ([error.userInfo[FBSDKGraphRequestErrorGraphErrorCode] isEqual:@200]) {
-                    callBack(NO, error);
-                } else {
-                    callBack(YES, result);
-                }
-            }];
+     startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+         if ([error.userInfo[FBSDKGraphRequestErrorGraphErrorCodeKey] isEqual:@200]) {
+             callBack(NO, error);
+         } else {
+             callBack(YES, result);
+         }
+     }];
 }
 
 - (void)shareFacebookLink:(NSString *)link title:(NSString *)title description:(NSString *)description imageUrl:(NSString *)imageUrl callBack:(FBHelperCallback)callBack {
@@ -722,13 +733,13 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     FBSDKShareLinkContent *content = [[FBSDKShareLinkContent alloc] init];
     content.contentURL = [NSURL URLWithString:link];
     //content.imageURL = [NSURL URLWithString:imageUrl];
     //content.contentDescription = description;
     //content.contentTitle = title;
-
+    
     FBSDKShareDialog *dialog = [[FBSDKShareDialog alloc] init];
     dialog.mode = FBSDKShareDialogModeNative;
     dialog.shareContent = content;
@@ -740,7 +751,7 @@
         callBack(NO, @"Can't show share dialog");
         return;
     }
-
+    
     self.sharedCallcack = callBack;
     [dialog show];
 }
@@ -750,7 +761,7 @@
         callBack(NO, @"Not logged in");
         return;
     }
-
+    
     [[AFNetworkActivityLogger sharedLogger] setLevel:AFLoggerLevelDebug];
     [[AFNetworkActivityLogger sharedLogger] startLogging];
     AFHTTPRequestOperationManager *restManager = [AFHTTPRequestOperationManager manager];
@@ -775,20 +786,20 @@
     }];
 }
 
-#pragma mark -
-#pragma mark - FBSDKAppInviteDialogDelegate methods
-
-- (void)appInviteDialog:(FBSDKAppInviteDialog *)appInviteDialog didCompleteWithResults:(NSDictionary *)results
-{
-    self.inviteCallcack(YES, results);
-    self.inviteCallcack = nil;
-}
-
-- (void)appInviteDialog:(FBSDKAppInviteDialog *)appInviteDialog didFailWithError:(NSError *)error
-{
-    self.inviteCallcack(NO, error);
-    self.inviteCallcack = nil;
-}
+//#pragma mark -
+//#pragma mark - FBSDKAppInviteDialogDelegate methods
+//
+//- (void)appInviteDialog:(FBSDKAppInviteDialog *)appInviteDialog didCompleteWithResults:(NSDictionary *)results
+//{
+//    self.inviteCallcack(YES, results);
+//    self.inviteCallcack = nil;
+//}
+//
+//- (void)appInviteDialog:(FBSDKAppInviteDialog *)appInviteDialog didFailWithError:(NSError *)error
+//{
+//    self.inviteCallcack(NO, error);
+//    self.inviteCallcack = nil;
+//}
 
 
 
@@ -821,14 +832,14 @@
     static FBHelper *scFacebook = nil;
     
     @synchronized (self){
-
+        
         static dispatch_once_t pred;
         dispatch_once(&pred, ^{
             scFacebook = [[FBHelper alloc] init];
             scFacebook.loginManager = [[FBSDKLoginManager alloc] init];
         });
     }
-
+    
     return scFacebook;
 }
 
@@ -922,10 +933,10 @@
     [[FBHelper shared] myFeedCallBack:callBack];
 }
 
-+ (void)inviteFriendsWithAppLinkURL:(NSURL *)url previewImageURL:(NSURL *)preview callBack:(FBHelperCallback)callBack
-{
-    [[FBHelper shared] inviteFriendsWithAppLinkURL:url previewImageURL:url callBack:callBack];
-}
+//+ (void)inviteFriendsWithAppLinkURL:(NSURL *)url previewImageURL:(NSURL *)preview callBack:(FBHelperCallback)callBack
+//{
+//    [[FBHelper shared] inviteFriendsWithAppLinkURL:url previewImageURL:url callBack:callBack];
+//}
 
 + (void)getPagesCallBack:(FBHelperCallback)callBack
 {
